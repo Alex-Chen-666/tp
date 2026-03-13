@@ -1,29 +1,27 @@
 package seedu.tutorswift;
 
+import java.util.ArrayList;
+
+/**
+ * Provides methods for operations (e.g. add, delete, and get tasks) handling
+ * an <code>ArrayList</code> of <code>Student</code> objects.
+ */
 public class StudentList {
+    private final ArrayList<Student> students;
 
-    private Student[] students;
-    private int size;
-
-    public StudentList() {
-        students = new Student[100]; // simple fixed-size array for now
-        size = 0;
+    public StudentList(){
+        this.students = new ArrayList<Student>();
     }
 
-    public void addStudent(Student s) {
-        students[size] = s;
-        size++;
+    public void addStudent(Student studentToAdd){
+        this.students.add(studentToAdd);
     }
 
-    public Student[] getStudents() {
-        Student[] current = new Student[size];
-        for (int i = 0; i < size; i++) {
-            current[i] = students[i];
-        }
-        return current;
+    public Student getStudent(int studentId) {
+        return this.students.get(studentId);
     }
 
     public int getSize() {
-        return size;
+        return this.students.size();
     }
 }
