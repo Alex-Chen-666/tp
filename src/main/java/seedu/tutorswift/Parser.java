@@ -2,6 +2,7 @@ package seedu.tutorswift;
 
 import seedu.tutorswift.command.Command;
 import seedu.tutorswift.command.EditCommand;
+import seedu.tutorswift.command.ExitCommand;
 
 import java.text.ParseException;
 
@@ -26,8 +27,8 @@ public class Parser {
         switch (commandName) {
         case "edit":
             return parseEdit(arguments);
-        //case "bye":
-            //return new ExitCommand();
+        case "bye":
+            return new ExitCommand();
         default:
             throw new TutorSwiftException("I'm sorry, but I don't know what '" + userInput + "' means :(\n");
         }
