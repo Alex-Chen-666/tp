@@ -32,8 +32,7 @@ public class DeleteCommand extends Command {
     public void execute(StudentList students, Ui ui) throws TutorSwiftException {
         int zeroBasedIndex = index - 1;
         if (zeroBasedIndex < 0 || zeroBasedIndex >= students.getSize()) {
-            throw new TutorSwiftException("Invalid index! Please provide a number between 1 and "
-                    + students.getSize() + ".");
+            throw new TutorSwiftException("Invalid! Please provide a valid index.");
         }
         Student deletedStudent = students.getStudent(zeroBasedIndex);
         students.deleteStudent(zeroBasedIndex);
