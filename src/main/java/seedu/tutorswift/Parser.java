@@ -3,6 +3,8 @@ package seedu.tutorswift;
 import seedu.tutorswift.command.Command;
 import seedu.tutorswift.command.EditCommand;
 import seedu.tutorswift.command.ExitCommand;
+import seedu.tutorswift.command.DeleteCommand;
+import seedu.tutorswift.command.ListCommand;
 import seedu.tutorswift.command.AddCommand;
 
 /**
@@ -26,6 +28,10 @@ public class Parser {
         switch (commandName) {
         case "edit":
             return parseEdit(arguments);
+        case "delete":
+            return parseDelete(arguments);
+        case "list":
+            return new ListCommand();
         case "bye":
             return new ExitCommand();
         case "add":
@@ -112,4 +118,32 @@ public class Parser {
         String result = args.substring(startIndex, endIndex).trim();
         return result.isEmpty() ? null : result;
     }
+
+    /**
+     * Parses arguments in the context of the delete student command.
+     *
+     * @param args The raw user input following the "delete" command word.
+     * @return A {@code DeleteCommand} with the specified student index.
+     * @throws TutorSwiftException If the index is missing or not a valid positive integer.
+     */
+    private static Command parseDelete(String args) throws TutorSwiftException {
+        if (args.isEmpty()) {
+            throw new TutorSwiftException("Delete command requires an index!");
+        }
+
+        String trimmed = args.trim();
+        int index;
+        try {
+            index = Integer.parseInt(trimmed);
+        } catch (NumberFormatException e) {
+            throw new TutorSwiftException("The index must be a positive integer.");
+        }
+
+        if (index <= 0) {
+            throw new TutorSwiftException("The index must be a positive integer.");
+        }
+
+        return new DeleteCommand(index);
+    }
+
 }
