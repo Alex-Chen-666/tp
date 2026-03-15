@@ -70,6 +70,19 @@ public class Ui {
         System.out.println(" Now you have " + totalStudents + " students in the list.");
         System.out.println("____________________________________________________________");
     }
+     * Shows that deletion was successful and shows the removed student details.
+     *
+     * @param deletedStudent The student that was just deleted.
+     */
+    public void showDeleteSuccess(Student deletedStudent) {
+        System.out.println("____________________________________________________________");
+        System.out.println(" Done! I've removed this student:");
+        System.out.println("   " + deletedStudent.getName() + " | " +
+                deletedStudent.getAcademicLevel() + " | " +
+                deletedStudent.getSubject());
+        System.out.println("____________________________________________________________");
+    }
+
     /**
      * Shows the exit message when the program ends.
      */
