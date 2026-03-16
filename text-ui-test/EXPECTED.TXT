@@ -1,4 +1,3 @@
-Hello from
          __...--~~~~~-._   _.-~~~~~--...__
       //               `V'               \\
      //                 |                 \\
@@ -7,7 +6,8 @@ Hello from
   ======================\\|//====================
                        `---'
 
-Welcome to TutorSwift! Manage your students efficiently.How can I help you?
+Welcome to TutorSwift! We'll help you manage your students efficiently!
+How can I help you?
 ____________________________________________________________
  Got it. I've added this student:
    Alex Tan | Secondary 3 | Mathematics
