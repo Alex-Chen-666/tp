@@ -21,31 +21,33 @@ class ListCommandTest {
 
     @BeforeEach
     void setUp() {
-        // Redirect System.out so we can capture printed output
         System.setOut(new PrintStream(outContent));
         ui = new Ui();
         studentList = new StudentList();
     }
-
+    /**
+     * JUnit tests for the ListCommand feature.
+     * Tests listing students when it has entries.
+     */
     @Test
     void execute_listStudents_displaysAllStudents() throws Exception {
-        // Add students
         Student s1 = new Student("John Tan", "Math", "Secondary 3");
         Student s2 = new Student("Sarah Lim", "English", "Primary 6");
         studentList.addStudent(s1);
         studentList.addStudent(s2);
 
-        // Execute ListCommand
         ListCommand listCommand = new ListCommand();
         listCommand.execute(studentList, ui);
 
         String output = outContent.toString();
 
-        // Assertions: check output contains student info and header
         assertTrue(output.contains("1.     John Tan | Math | Secondary 3"));
         assertTrue(output.contains("2.     Sarah Lim | English | Primary 6"));
     }
-
+    /**
+     * JUnit tests for the ListCommand feature.
+     * Tests listing students when it has no entries.
+     */
     @Test
     void execute_listEmpty_displaysNoStudentsMessage() throws Exception {
         ListCommand listCommand = new ListCommand();
@@ -53,7 +55,6 @@ class ListCommandTest {
 
         String output = outContent.toString();
 
-        // Update to match new empty message
         assertTrue(output.contains("There are currently no students."));
     }
 }
