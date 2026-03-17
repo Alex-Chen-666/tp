@@ -41,8 +41,9 @@ class ListCommandTest {
 
         String output = outContent.toString();
 
-        assertTrue(output.contains("1.     John Tan | Math | Secondary 3"));
-        assertTrue(output.contains("2.     Sarah Lim | English | Primary 6"));
+        assertTrue(output.contains("1. John Tan | Math | Secondary 3"));
+        assertTrue(output.contains("2. Sarah Lim | English | Primary 6"));
+
     }
     /**
      * JUnit tests for the ListCommand feature.
