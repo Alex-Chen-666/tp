@@ -1,5 +1,7 @@
 package seedu.tutorswift;
 
+import java.util.ArrayList;
+
 /**
  * Represents a student with a name, subject, and academic level.
  * Includes status tracking for active or archived states.
@@ -9,6 +11,7 @@ public class Student {
     private String name;
     private String subject;
     private String academicLevel;
+    private final ArrayList<Lesson> lessons;
     private boolean isArchived;
 
     /**
@@ -20,6 +23,7 @@ public class Student {
         this.academicLevel = academicLevel;
         this.subject = subject;
         this.isArchived = false;
+        this.lessons = new ArrayList<>();
     }
 
     public String getName() {
@@ -77,6 +81,16 @@ public class Student {
         isArchived = archived;
     }
     // @@author
+
+    public void addLesson(Lesson newLesson) throws TutorSwiftException {
+        for (Lesson existingLesson : lessons) {
+            if (existingLesson.isOverlapping(newLesson)) {
+                throw new TutorSwiftException("Schedule conflict! Overlaps with existing lesson: " + existingLesson);
+            }
+        }
+        lessons.add(newLesson);
+    }
+
     /**
      * Returns a string representation of the student in the format:
      * "name | academic level | subject".

@@ -11,6 +11,11 @@ import seedu.tutorswift.command.ArchiveCommand;
 import seedu.tutorswift.command.UnarchiveCommand;
 import seedu.tutorswift.command.ListArchiveCommand;
 import seedu.tutorswift.command.DeleteArchiveCommand;
+import seedu.tutorswift.command.ScheduleCommand;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 /**
  * This class contains the logic to interpret strings and return the
@@ -21,7 +26,17 @@ public class Parser {
     private static final String PREFIX_NAME = "n/";
     private static final String PREFIX_LEVEL = "l/";
     private static final String PREFIX_SUBJECT = "s/";
-    private static final String[] ALL_PREFIXES = {PREFIX_NAME, PREFIX_LEVEL, PREFIX_SUBJECT};
+    private static final String PREFIX_DAY = "d/";
+    private static final String PREFIX_START = "s/";
+    private static final String PREFIX_END = "e/";
+    private static final String[] ALL_PREFIXES = {
+        PREFIX_NAME,
+        PREFIX_LEVEL,
+        PREFIX_SUBJECT,
+        PREFIX_DAY,
+        PREFIX_START,
+        PREFIX_END
+    };
 
     /**
      * Parses the full user input string and returns the corresponding command.
@@ -60,6 +75,8 @@ public class Parser {
             return new ListArchiveCommand();
         case "delete-archive":
             return new DeleteArchiveCommand(parseIndex(arguments));
+        case "schedule":
+            return parseSchedule(arguments);
         default:
             throw new TutorSwiftException("I'm sorry, but I don't know what '" + userInput + "' means :(\n");
         }
@@ -218,5 +235,29 @@ public class Parser {
         }
 
         return new FindCommand(name, subject, level);
+    }
+
+    private static Command parseSchedule(String args) throws TutorSwiftException {
+        String name = getValueByPrefix(args, PREFIX_NAME);
+        String dayStr = getValueByPrefix(args, PREFIX_DAY);
+        String startStr = getValueByPrefix(args, PREFIX_START);
+        String endStr = getValueByPrefix(args, PREFIX_END);
+
+        if (name == null || dayStr == null || startStr == null || endStr == null) {
+            throw new TutorSwiftException("Invalid format. Use: schedule n/NAME d/DAY s/HH:mm e/HH:mm");
+        }
+
+        try {
+            DayOfWeek day = DayOfWeek.valueOf(dayStr.trim().toUpperCase());
+            LocalTime startTime = LocalTime.parse(startStr.trim());
+            LocalTime endTime = LocalTime.parse(endStr.trim());
+
+            return new ScheduleCommand(name.trim(), day, startTime, endTime);
+
+        } catch (IllegalArgumentException e) {
+            throw new TutorSwiftException("Invalid day. Please use full day names (e.g., Monday).");
+        } catch (DateTimeParseException e) {
+            throw new TutorSwiftException("Invalid time format. Please use 24-hour HH:mm format (e.g., 14:00).");
+        }
     }
 }
