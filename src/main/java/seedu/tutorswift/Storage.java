@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,18 +19,36 @@ public class Storage {
     private final String filePath;
 
     /**
-     * Initializes Storage with default path. Creates directory if missing.
+     * Initializes Storage with the default file path.
      */
     public Storage() {
-        this.filePath = DEFAULT_FILE_PATH;
-        prepareDirectory();
+        this(DEFAULT_FILE_PATH);
     }
 
-    private void prepareDirectory() {
-        try {
-            Files.createDirectories(Paths.get("./data"));
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Could not create directory for storage", e);
+    /**
+     * Initializes Storage with a custom file path.
+     * Useful for testing with temporary files.
+     *
+     * @param filePath The path to the storage file.
+     */
+    public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        this.filePath = filePath;
+        prepareDirectory(filePath);
+    }
+
+    /**
+     * Creates the parent directory for the given file path if it doesn't exist.
+     */
+    private void prepareDirectory(String filePath) {
+        Path path = Paths.get(filePath);
+        Path parentDir = path.getParent();
+        if (parentDir != null) {
+            try {
+                Files.createDirectories(parentDir);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Could not create directory: " + parentDir, e);
+            }
         }
     }
 
