@@ -18,6 +18,10 @@ public class TutorSwift {
      * Initializes the UI, Storage, and loads student data from the disk.
      */
     public TutorSwift() {
+        if (java.util.logging.Logger.getLogger("").getHandlers().length > 0) {
+            java.util.logging.Logger.getLogger("").getHandlers()[0]
+                    .setLevel(java.util.logging.Level.WARNING);
+        }
         ui = new Ui();
         storage = new Storage();
         students = storage.load();
