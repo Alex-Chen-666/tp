@@ -13,7 +13,6 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScheduleCommandTest {
     private StudentList students;
@@ -66,7 +65,7 @@ public class ScheduleCommandTest {
     }
 
     @Test
-    public void execute_studentNotFound_throwsTutorSwiftException() {
+    public void execute_studentNotFound_throwsTutorSwiftException() throws TutorSwiftException {
         Student testStudent = new Student("Charlie", "JC 1", "Chemistry");
         students.addStudent(testStudent);
 
