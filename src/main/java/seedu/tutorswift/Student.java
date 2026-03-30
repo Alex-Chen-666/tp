@@ -49,6 +49,10 @@ public class Student {
         return feeRecord;
     }
 
+    public ArrayList<Lesson> getLessons() {
+        return lessons;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
