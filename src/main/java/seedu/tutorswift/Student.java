@@ -121,7 +121,6 @@ public class Student {
     @Override
     public String toString() {
         StringBuilder gradeStr = new StringBuilder();
-
         if (!grades.isEmpty()) {
             gradeStr.append(" | Grades: ");
             for (int i = 0; i < grades.size(); i++) {
@@ -131,11 +130,25 @@ public class Student {
                 }
             }
         }
+
+        StringBuilder lessonStr = new StringBuilder();
+        if (!lessons.isEmpty()) {
+            lessonStr.append(" | Lessons: ");
+            for (int i = 0; i < lessons.size(); i++) {
+                lessonStr.append("[").append(lessons.get(i).toString()).append("]");
+                if (i < lessons.size() - 1) {
+                    lessonStr.append(" ");
+                }
+            }
+        }
       
         String status = isArchived ? " [ARCHIVED]" : "";
+
         String remarkStr = (remark != null) ? " | Remark: " + remark : "";
+
         return name + " | " + academicLevel + " | " + subject
                 + gradeStr.toString()
+                + lessonStr.toString()
                 + remarkStr
                 + status;
     }
