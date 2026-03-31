@@ -1,66 +1,38 @@
-### Find feature
+# Developer Guide
 
-#### Current Implementation
+## Acknowledgements
 
-The `find` feature is implemented using the Command design pattern and involves both the `Parser` and `FindCommand` classes.
+{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-When a user enters a `find` command:
+## Design & implementation
 
-1. `Parser.parseUserInput()` identifies the `find` keyword and delegates parsing to `parseFind(args)`.
-2. `parseFind(args)` extracts values associated with the prefixes:
-  - `n/` for name
-  - `s/` for subject
-  - `l/` for academic level
-3. If the input is empty or no valid prefixes are detected, a `TutorSwiftException` is thrown to prevent invalid queries.
-4. A `FindCommand` object is created with the extracted values. Fields not provided are set to `null`.
-5. The command is returned and executed via `FindCommand.execute()`.
+{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
-![Find Parser Sequence Diagram](images/FindCommandSequenceDiagram.png)
 
-During execution:
+## Product scope
+### Target user profile
 
-1. The command retrieves both active and archived student lists from `StudentList`.
-2. Each list is processed using the helper method `searchList(...)`.
-3. For each student, matching is performed based on the non-null fields:
-  - Matching uses `String.contains()` for partial matching
-  - All comparisons are case-insensitive
-4. Students that satisfy all specified conditions are added to a result list.
-5. The results are passed to `Ui.showFindResults(...)` for display.
+{Describe the target user profile}
 
----
-![Find Parser Sequence Diagram](images/ParserFindSequenceDiagram.png)
-#### Design Considerations
+### Value proposition
 
-**Flexible search fields**
+{Describe the value proposition: what problem does it solve?}
 
-- Alternative: Require all fields to be provided
-- Chosen: Allow any combination of fields
-- Rationale: Users may only know partial information, so flexibility improves usability
+## User Stories
 
-**Matching strategy**
+|Version| As a ... | I want to ... | So that I can ...|
+|--------|----------|---------------|------------------|
+|v1.0|new user|see usage instructions|refer to them when I forget how to use the application|
+|v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
 
-- Alternative: Exact string matching
-- Chosen: Partial and case-insensitive matching
-- Rationale: Reduces user input errors and supports more natural queries
+## Non-Functional Requirements
 
-**Search scope**
+{Give non-functional requirements}
 
-- Alternative: Search only active students
-- Chosen: Search both active and archived students
-- Rationale: Ensures that archived records remain accessible
+## Glossary
 
-**Validation strategy**
+* *glossary item* - Definition
 
-- Alternative: Allow empty or invalid inputs and return no results
-- Chosen: Throw `TutorSwiftException` for invalid inputs
-- Rationale: Prevents meaningless operations and enforces correct usage
+## Instructions for manual testing
 
----
-
-#### Notes
-
-Sequence diagrams are used to illustrate:
-- The interaction between `Parser` and `FindCommand`
-- The execution flow of `FindCommand`
-
-These diagrams provide a visual representation of the control flow and object interactions.
+{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
