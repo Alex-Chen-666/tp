@@ -41,8 +41,10 @@ deactivate FC
 
 FC -> UI : showFindResults(results)
 activate UI
-UI --> FC : (void)
 deactivate UI
 
+FC --> User
+
 deactivate FC
+destroy FC
 @enduml
