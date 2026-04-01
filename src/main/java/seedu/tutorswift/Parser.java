@@ -32,6 +32,28 @@ import java.time.format.DateTimeParseException;
  */
 public class Parser {
 
+    public static final String USAGE_GUIDE = "Please enter a valid command.\n"
+            + "Here is the TutorSwift usage guide:\n"
+            + "  add            - Adds a new student\n"
+            + "  edit           - Edits an existing student's details\n"
+            + "  delete         - Removes a student from the active list\n"
+            + "  find           - Finds students by keyword\n"
+            + "  list           - Displays all active students\n"
+            + "  grade          - Adds a grade for a student\n"
+            + "  remove-grade   - Removes a specific grade from a student\n"
+            + "  remark         - Adds a remark for a student\n"
+            + "  remove-remark  - Removes the remark from a student\n"
+            + "  fee            - Sets the per-lesson fee for a student\n"
+            + "  paid           - Marks a student's fee as paid for a month\n"
+            + "  unpaid         - Marks a student's fee as unpaid for a month\n"
+            + "  schedule       - Schedules a new lesson for a student\n"
+            + "  upcoming       - Shows your lesson schedule for the next 7 days\n"
+            + "  archive        - Moves a student to the archive\n"
+            + "  unarchive      - Restores a student from the archive\n"
+            + "  list-archive   - Displays all archived students\n"
+            + "  delete-archive - Permanently removes a student from the archive\n"
+            + "  bye            - Exits the application";
+
     private static final String PREFIX_NAME = "n/";
     private static final String PREFIX_LEVEL = "l/";
     private static final String PREFIX_SUBJECT = "sub/";
@@ -56,28 +78,6 @@ public class Parser {
         PREFIX_FEE,
         PREFIX_PERIOD
     };
-
-    public static final String USAGE_GUIDE = "Please enter a valid command.\n"
-            + "Here is the TutorSwift usage guide:\n"
-            + "  add            - Adds a new student\n"
-            + "  edit           - Edits an existing student's details\n"
-            + "  delete         - Removes a student from the active list\n"
-            + "  find           - Finds students by keyword\n"
-            + "  list           - Displays all active students\n"
-            + "  grade          - Adds a grade for a student\n"
-            + "  remove-grade   - Removes a specific grade from a student\n"
-            + "  remark         - Adds a remark for a student\n"
-            + "  remove-remark  - Removes the remark from a student\n"
-            + "  fee            - Sets the per-lesson fee for a student\n"
-            + "  paid           - Marks a student's fee as paid for a month\n"
-            + "  unpaid         - Marks a student's fee as unpaid for a month\n"
-            + "  schedule       - Schedules a new lesson for a student\n"
-            + "  upcoming       - Shows your lesson schedule for the next 7 days\n"
-            + "  archive        - Moves a student to the archive\n"
-            + "  unarchive      - Restores a student from the archive\n"
-            + "  list-archive   - Displays all archived students\n"
-            + "  delete-archive - Permanently removes a student from the archive\n"
-            + "  bye            - Exits the application";
 
     /**
      * Parses the full user input string and returns the corresponding command.
