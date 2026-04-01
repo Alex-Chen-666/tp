@@ -117,7 +117,7 @@ Expected behaviour:
 
 Schedules a new recurring weekly lesson for an existing active student in the student list.
 
-Format: `schedule NAME day/DAY_OF_WEEK start/START_TIME end/END_TIME`
+Format: `schedule n/NAME day/DAY_OF_WEEK start/START_TIME end/END_TIME`
 
 - Schedules a lesson for the student with the specified `NAME`. The name must exactly match an existing student in your active list (case-insensitive).
 
@@ -131,8 +131,8 @@ Format: `schedule NAME day/DAY_OF_WEEK start/START_TIME end/END_TIME`
 
 Examples of usage:
 
-- `schedule Alice day/Monday start/10:00 end/12:00` Schedules a 2-hour lesson for Alice every Monday from 10:00 AM to 12:00 PM.
-- `schedule John Doe day/Wednesday start/15:30 end/17:30` Schedules a lesson for John Doe every Wednesday from 3:30 PM to 5:30 PM.
+- `schedule n/Alice day/Monday start/10:00 end/12:00` Schedules a 2-hour lesson for Alice every Monday from 10:00 AM to 12:00 PM.
+- `schedule n/John Doe day/Wednesday start/15:30 end/17:30` Schedules a lesson for John Doe every Wednesday from 3:30 PM to 5:30 PM.
 
 ### Viewing upcoming lessons: `upcoming`
 
@@ -162,11 +162,11 @@ Examples of usage:
 
 {Give a 'cheat sheet' of commands here}
 
-| Action     | Format                                                        | Examples                                          |
-|------------|---------------------------------------------------------------|---------------------------------------------------|
-| Edit       | `edit INDEX [n/NAME] [l/ACADEMIC_LEVEL] [sub/SUBJECT]`        | `edit 1 n/Jane Doe l/Secondary 2 sub/Science`     |
-| Add Grade  | `grade INDEX m/ASSESSMENT g/SCORE`                            |                                                   |
-| Add Remark | `remark INDEX r/REMARK`                                       |                                                   |
-| Schedule   | `schedule NAME day/DAY_OF_WEEK start/START_TIME end/END_TIME` | `schedule Alice day/Monday start/10:00 end/12:00` |
-| Upcoming   | `upcoming`                                                    | -                                                 |
+| Action     | Format                                                          | Examples                                            |
+|------------|-----------------------------------------------------------------|-----------------------------------------------------|
+| Edit       | `edit INDEX [n/NAME] [l/ACADEMIC_LEVEL] [sub/SUBJECT]`          | `edit 1 n/Jane Doe l/Secondary 2 sub/Science`       |
+| Add Grade  | `grade INDEX m/ASSESSMENT g/SCORE`                              |                                                     |
+| Add Remark | `remark INDEX r/REMARK`                                         |                                                     |
+| Schedule   | `schedule n/NAME day/DAY_OF_WEEK start/START_TIME end/END_TIME` | `schedule n/Alice day/Monday start/10:00 end/12:00` |
+| Upcoming   | `upcoming`                                                      | -                                                   |
 
