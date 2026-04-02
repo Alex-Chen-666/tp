@@ -143,7 +143,7 @@ The following sequence diagram shows how an edit operation executes through the 
 
   - Cons: The editStudent method parameter list can become long if more fields (e.g., phone number, email) are added in the future.
 
-- **Alternative 2**: Use setter methods directly inside EditCommand** (e.g., if (newName != null) student.setName(newName);).
+- **Alternative 2**: Use setter methods directly inside EditCommand (e.g., if (newName != null) student.setName(newName);).
 
   - Pros: Keeps the Student class slightly smaller by removing the dedicated editStudent method.
 
