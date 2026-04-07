@@ -1,0 +1,56 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+package "Storage" <<Rectangle>> {
+    class Storage {
+        - filePath: String
+        + Storage()
+        + Storage(filePath: String)
+        + load(): StudentList
+        + save(students: StudentList)
+        - prepareDirectory(filePath: String)
+        - parseLineToStudent(line: String): Student
+    }
+}
+
+package "Model" <<Rectangle>> {
+    class StudentList {
+        + getAllActive(): ArrayList<Student>
+        + getAllArchived(): ArrayList<Student>
+        + addStudent(student: Student)
+    }
+
+    class Student {
+        - name: String
+        - isArchived: boolean
+        - remark: String
+        + toSaveFormat(): String
+        + addGrade(assessment: String, score: int)
+        + addLesson(lesson: Lesson)
+    }
+
+    class Grade {
+    }
+
+    class Lesson {
+    }
+
+    class FeeRecord {
+        {static} + fromSaveFormat(raw: String): FeeRecord
+        + toSaveFormat(): String
+    }
+}
+
+
+Storage .down.> StudentList : loads/saves >
+Storage .right.> Student : creates >
+Storage .down.> Lesson : instantiates >
+Storage .down.> FeeRecord : parses via >
+
+StudentList "1" o-down-> "*" Student : contains >
+Student "1" *-- "*" Grade : tracks >
+Student "1" *-- "*" Lesson : has >
+Student "1" *-- "1" FeeRecord : manages >
+
+@enduml
