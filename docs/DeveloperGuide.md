@@ -126,6 +126,8 @@ The API of this component is specified in `Storage.java`.
 - Constructors: `Storage()` uses default path `./data/tutorswift.txt`. `Storage(String filePath)` supports tests.
 - Public methods: `save(StudentList)` and `load()`.
 - Helpers: `prepareDirectory(String)` and `parseLineToStudent(String)`.
+- The class diagram below shows its internal structure and its dependencies on the `Model` classes:
+  ![Storage Class Diagram](images/StorageClassDiagram.png)
 
 #### What the Storage component does
 - Ensure parent directories exist.
