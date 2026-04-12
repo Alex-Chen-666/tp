@@ -52,8 +52,8 @@ Given below are my contributions to the project.
 
 ---
 **Community:**
-- PRs  reviewed with non-trivial review comments): 
-- Reported high severity bug for other teams ([#6](https://github.com/NUS-CS2113-AY2526-S2/ped-matheuczx/issues/6)
+- PRs reviewed with non-trivial review comments [#103](https://github.com/AY2526S2-CS2113-W11-1/tp/pull/103),[#28](https://github.com/AY2526S2-CS2113-W11-1/tp/pull/28),[#23](https://github.com/AY2526S2-CS2113-W11-1/tp/pull/23),[#25](https://github.com/AY2526S2-CS2113-W11-1/tp/pull/25)
+- Reported high severity bug for other teams [#6](https://github.com/NUS-CS2113-AY2526-S2/ped-matheuczx/issues/6)
 ---
 
 ### Documentation:
