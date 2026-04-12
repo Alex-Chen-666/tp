@@ -36,10 +36,14 @@ public class StudentList {
      */
     public boolean hasStudentWithName(String name) {
         for (Student s : activeStudents) {
-            if (s.getName().equalsIgnoreCase(name)) return true;
+            if (s.getName().equalsIgnoreCase(name)){
+                return true;
+            }
         }
         for (Student s : archivedStudents) {
-            if (s.getName().equalsIgnoreCase(name)) return true;
+            if (s.getName().equalsIgnoreCase(name)){
+                return true;
+            }
         }
         return false;
     }
