@@ -321,7 +321,7 @@ Format: `schedule INDEX day/DAY_OF_WEEK start/START_TIME end/END_TIME`
 
 - `START_TIME` must be strictly before the `END_TIME`.
 
-- Note on time conflicts: You cannot schedule a lesson that overlaps with another existing lesson for the same student. However, the system allows overlapping lessons across different students (useful for scheduling group tuition classes).
+- Note on time conflicts: You cannot schedule a lesson that overlaps with another existing lesson for the same student. However, the system intentionally allows overlapping lessons across different students. This provides maximum flexibility for tutors who run group tuition classes, supervised study rooms, or mixed homework clinics where multiple students may be studying different subjects or academic levels at the same time.
 
 Examples of usage:
 
