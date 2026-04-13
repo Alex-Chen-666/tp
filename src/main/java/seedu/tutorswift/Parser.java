@@ -1,25 +1,6 @@
 package seedu.tutorswift;
 
-import seedu.tutorswift.command.Command;
-import seedu.tutorswift.command.EditCommand;
-import seedu.tutorswift.command.ExitCommand;
-import seedu.tutorswift.command.DeleteCommand;
-import seedu.tutorswift.command.ListCommand;
-import seedu.tutorswift.command.AddCommand;
-import seedu.tutorswift.command.FindCommand;
-import seedu.tutorswift.command.ArchiveCommand;
-import seedu.tutorswift.command.UnarchiveCommand;
-import seedu.tutorswift.command.ListArchiveCommand;
-import seedu.tutorswift.command.DeleteArchiveCommand;
-import seedu.tutorswift.command.ScheduleCommand;
-import seedu.tutorswift.command.GradeCommand;
-import seedu.tutorswift.command.RemarkCommand;
-import seedu.tutorswift.command.FeeCommand;
-import seedu.tutorswift.command.PaidCommand;
-import seedu.tutorswift.command.UnpaidCommand;
-import seedu.tutorswift.command.UpcomingCommand;
-import seedu.tutorswift.command.RemoveGradeCommand;
-import seedu.tutorswift.command.RemoveRemarkCommand;
+import seedu.tutorswift.command.*;
 
 import java.time.YearMonth;
 import java.time.DayOfWeek;
@@ -133,6 +114,10 @@ public class Parser {
             return parseRemoveGrade(arguments);
         case "remove-remark":
             return parseRemoveRemark(arguments);
+        case "fee-summary":
+            return parseFeeSummary(arguments);
+        case "monthly-income":
+            return parseMonthlyIncome(arguments);
         default:
             throw new TutorSwiftException("I'm sorry, but I don't know what '"
                     + userInput + "' means :(\n" + USAGE_GUIDE);
@@ -525,5 +510,43 @@ public class Parser {
         } catch (Exception e) {
             throw new TutorSwiftException("Invalid year-month. Use ym/YYYY-MM (e.g. ym/2026-03).");
         }
+    }
+    /**
+     * Parses the "feesummary" command string and returns a {@code FeeSummaryCommand}.
+     * The command expects an index followed by a month in the format "ym/YYYY-MM".
+     *
+     * @param args The command arguments string containing the student index and month.
+     * @return A new {@code FeeSummaryCommand} initialized with the parsed index and month.
+     * @throws TutorSwiftException If the arguments are empty, the index is invalid,
+     * or the month format is incorrect.
+     */
+    private static Command parseFeeSummary(String args) throws TutorSwiftException {
+        if (args.trim().isEmpty()) {
+            throw new TutorSwiftException("Usage: fee-summary INDEX ym/YYYY-MM");
+        }
+
+        // Reuse your existing index parser
+        int index = parseIndexFromArgs(args);
+
+        // Reuse your existing YearMonth parser
+        YearMonth month = parseYearMonth(args);
+
+        return new FeeSummaryCommand(index, month);
+    }
+    /**
+     * Parses the "monthly-income" command string and returns a {@code MonthlyIncomeCommand}.
+     * The command expects a month in the format "ym/YYYY-MM".
+     *
+     * @param args The command arguments string containing the month.
+     * @return A new {@code MonthlyIncomeCommand} initialized with the parsed month.
+     * @throws TutorSwiftException If the arguments are empty or the month format is incorrect.
+     */
+    private static Command parseMonthlyIncome(String args) throws TutorSwiftException {
+        if (args.trim().isEmpty()) {
+            throw new TutorSwiftException("Usage: monthly-income ym/YYYY-MM");
+        }
+        // Only parse the YearMonth prefix, skip index parsing
+        YearMonth month = parseYearMonth(args);
+        return new MonthlyIncomeCommand(month);
     }
 }
