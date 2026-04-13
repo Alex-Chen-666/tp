@@ -88,6 +88,10 @@ public class Parser {
      * @return A {@link Command} object ready for execution.
      */
     public static Command parseUserInput(String userInput)  throws TutorSwiftException {
+        if (userInput.contains("|")) {
+            throw new TutorSwiftException("The character '|' is reserved for system use");
+        }
+
         if (userInput.trim().isEmpty()) {
             throw new TutorSwiftException(USAGE_GUIDE);
         }
@@ -301,13 +305,21 @@ public class Parser {
     }
 
     private static Command parseSchedule(String args) throws TutorSwiftException {
-        String name = getValueByPrefix(args, PREFIX_NAME);
-        String dayStr = getValueByPrefix(args, PREFIX_DAY);
-        String startStr = getValueByPrefix(args, PREFIX_START);
-        String endStr = getValueByPrefix(args, PREFIX_END);
+        if (args.trim().isEmpty()) {
+            throw new TutorSwiftException("Usage: schedule INDEX day/DAY start/HH:mm end/HH:mm");
+        }
 
-        if (name == null || dayStr == null || startStr == null || endStr == null) {
-            throw new TutorSwiftException("Invalid format. Use: schedule n/NAME day/DAY start/HH:mm end/HH:mm");
+        int index = parseIndexFromArgs(args);
+
+        String[] parts = args.trim().split("\\s+", 2);
+        String remaining = parts.length > 1 ? parts[1] : "";
+
+        String dayStr = getValueByPrefix(remaining, PREFIX_DAY);
+        String startStr = getValueByPrefix(remaining, PREFIX_START);
+        String endStr = getValueByPrefix(remaining, PREFIX_END);
+
+        if (dayStr == null || startStr == null || endStr == null) {
+            throw new TutorSwiftException("Invalid format. Use: schedule INDEX day/DAY start/HH:mm end/HH:mm");
         }
 
         try {
@@ -315,7 +327,7 @@ public class Parser {
             LocalTime startTime = LocalTime.parse(startStr.trim());
             LocalTime endTime = LocalTime.parse(endStr.trim());
 
-            return new ScheduleCommand(name.trim(), day, startTime, endTime);
+            return new ScheduleCommand(index, day, startTime, endTime);
 
         } catch (IllegalArgumentException e) {
             throw new TutorSwiftException("Invalid day. Please use full day names (e.g., Monday).");

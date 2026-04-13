@@ -112,13 +112,14 @@ public class Student {
     }
     // @@author
 
+    /**
+     * Assigns a lesson to the student.
+     * Applies the Overwrite Rule: Clears any existing lessons so the student
+     * only has one active recurring timeslot, allowing easy rescheduling.
+     */
     public void addLesson(Lesson newLesson) throws TutorSwiftException {
-        for (Lesson existingLesson : lessons) {
-            if (existingLesson.isOverlapping(newLesson)) {
-                throw new TutorSwiftException("Schedule conflict! Overlaps with existing lesson: " + existingLesson);
-            }
-        }
-        lessons.add(newLesson);
+        this.lessons.clear();
+        this.lessons.add(newLesson);
     }
 
     public void addGrade(String assessment, int score) {

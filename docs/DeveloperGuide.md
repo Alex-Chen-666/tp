@@ -205,13 +205,12 @@ The operation is executed through the following sequence:
 
 1. `ScheduleCommand#execute(students, ui)` is invoked.
 
-2. The command retrieves the target student from the `StudentList` using the provided `studentName`.
-If the student is not found, a `TutorSwiftException` is thrown.
+2. The command validates the provided `studentIndex`. It then retrieves the target student from the `StudentList`.
+If the index is out of bounds, a `TutorSwiftException` is thrown.
 
 3. A new `Lesson` object is instantiated using the provided `DayOfWeek`, `startTime`, and `endTime`.
 
-4. It calls `Student#addLesson(newLesson)`. Inside this method, the new lesson is checked against the student's existing lessons. 
-If an overlap is detected, a TutorSwiftException is thrown. Otherwise, it is appended to the student's internal list of lessons.
+4. It calls `Student#addLesson(newLesson)`. Inside this method, any existing lesson for that student is cleared and replaced by the new lesson timing (Overwrite Rule), ensuring each student has exactly one active recurring timeslot.
 
 5. The `Ui#showLessonScheduled(String studentName, Lesson lesson)` is called to display a success message to the user.
 
@@ -219,16 +218,15 @@ Given below is an example usage scenario and how the schedule mechanism behaves 
 
 Step 1. The user launches the application. The `StudentList` contains an active student named "Alice".
 
-Step 2. The user decides to schedule a 2-hour Math lesson for Alice on Monday morning, and executes the command `schedule Alice day/Monday start/10:00 end/12:00`.
+Step 2. The user decides to schedule a 2-hour Math lesson for Alice(who is at index 1) on Monday morning, and executes the command `schedule 1 day/Monday start/10:00 end/12:00`.
 
-Step 3. The parser interprets the user input and instantiates a `ScheduleCommand` object with `studentName` "Alice", `day` MONDAY, `startTime` 10:00, and `endTime` 12:00.
+Step 3. The parser interprets the user input and instantiates a `ScheduleCommand` object with `studentIndex` 1, `day` MONDAY, `startTime` 10:00, and `endTime` 12:00.
 
-Step 4. The `ScheduleCommand#execute()` method is called. It queries the `StudentList` and successfully retrieves the `Student` object corresponding to "Alice".
+Step 4. The `ScheduleCommand#execute()` method is called. It validates that index 1 is within bounds and retrieves the `Student` object using `getActiveStudent(0)` (accounting for 0-based indexing).
 
 Step 5. The command instantiates a new `Lesson` object with the given day and times.
 
-Step 6. The command calls `targetStudent.addLesson(newLesson)`. The `Student` object iterates through its existing lessons and calls `isOverlapping(newLesson)`. 
-Since Alice has no other lessons at this time, it safely appends the newly created lesson to her internal list.
+Step 6. The command calls `targetStudent.addLesson(newLesson)`. The `Student` object clears its internal lessons list and appends the newly created lesson, allowing for rescheduling without double-booking the same student.
 
 Step 7. The command calls `ui.showLessonScheduled(targetStudent.getName(), newLesson)` to display a success message showing the scheduled lesson details.
 
@@ -240,11 +238,10 @@ The following sequence diagram shows how a schedule operation executes through t
 
 **Aspect: Handling lesson time conflicts (Double-booking).**
 
-- **Alternative 1 (Current Choice):**  Prevent overlapping lessons for the same student, but allow overlapping lessons across different students.
+- **Alternative 1 (Current Choice):**  Use an Overwrite Rule to manage student schedules.
   
-  - Pros: Prevents illogical scheduling (e.g., booking the same student for two different lessons at the exact same time). 
-    However, it still provides flexibility for the tutor if they happen to teach multiple students in a shared group-tuition setting during the exact same time slot.
-  - Cons: The tutor might accidentally double-book themselves for two different 1-on-1 private lessons at the same time and the system will not warn them.
+  - Pros: Simplifies the rescheduling process and prevents accidental double-booking of a single student for multiple concurrent sessions.
+  - Cons: A student cannot have multiple different lessons scheduled in the same week (e.g., Math on Monday and Physics on Thursday).
 
 - **Alternative 2**: Prevent all overlapping lessons by validating the new time slot against all existing lessons across the entire `StudentList`.
 
@@ -742,8 +739,8 @@ TutorSwift is a high-speed administrative tool that allows tutors to track stude
 1. Hardware Requirements: The system should work on any mainstream operating system (Windows, macOS, Linux) that has Java 17 or above installed.
 2. Performance: The system should respond to all user commands within two seconds.
 3. Capacity: The system should be capable of holding up to 1,000 student profiles (including their associated grades and lessons, etc) without noticeable sluggishness in performance for typical usage.
-4. User Interface: A user who is an above-average typist should be able to accomplish tasks significantly faster using the Command Line Interface (CLI) compared to a traditional mouse-driven Graphical User Interface (GUI).
-5. Data Persistence: Data should be saved locally in a human-editable text file without requiring the installation of a dedicated Database Management System (DBMS).
+4. User Interface: A user with a typing speed of at least 50 WPM should be able to complete student record updates (e.g., adding a student and scheduling a lesson) within 10 seconds, which is at least 30% faster than performing the equivalent tasks on a standard mouse-driven GUI.
+5. Ease of Installation (Zero-Configuration): The system must be fully functional upon downloading the JAR file, without requiring the user to install, configure, or maintain an external database engine or any third-party software.
 6. Robustness: The system should not crash under typical usage or when provided with invalid user input, it should gracefully handle errors and display helpful feedback to the user.
 
 ## Glossary
@@ -849,11 +846,15 @@ Given below are instructions to test the app manually.
 
 ### Scheduling and Upcoming Lessons
 
-- Prerequisite: Ensure a student named "John Doe" exists.
+- Prerequisite: Ensure at least one active student exists in the list (e.g., at index 1). Use `list` to verify.
 
-- Test case: `schedule John Doe day/Monday start/14:00 end/16:00`
+- Test case: `schedule 1 day/Monday start/14:00 end/16:00`
 
   Expected outcome: A 2-hour lesson is added to John Doe's profile. A success message is displayed.
+
+- Test case: `schedule -1 day/Monday start/14:00 end/16:00`
+
+  Expected outcome: The system throws an error stating "Index must be a positive integer."
 
 - Test case: upcoming
 

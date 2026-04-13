@@ -6,23 +6,15 @@ participant ":ScheduleCommand" as ScheduleCommand
 participant "students:StudentList" as StudentList
 participant "targetStudent:Student" as Student
 participant "newLesson:Lesson" as Lesson
-participant "existingLesson:Lesson" as ExistingLesson
 participant "ui:Ui" as Ui
 
 [-> ScheduleCommand : execute(students, ui)
 activate ScheduleCommand
 
-loop activeSize times
-    ScheduleCommand -> StudentList : getActiveStudent(i)
-    activate StudentList
-    StudentList --> ScheduleCommand : student
-    deactivate StudentList
-
-    ScheduleCommand -> Student : getName()
-    activate Student
-    Student --> ScheduleCommand : name
-    deactivate Student
-end
+ScheduleCommand -> StudentList : getActiveStudent(studentIndex - 1)
+activate StudentList
+StudentList --> ScheduleCommand : targetStudent
+deactivate StudentList
 
 create Lesson
 ScheduleCommand -> Lesson : Lesson(day, startTime, endTime)
@@ -32,32 +24,16 @@ deactivate Lesson
 
 ScheduleCommand -> Student : addLesson(newLesson)
 activate Student
+deactivate Student
 
-loop all existing lessons
-    Student -> ExistingLesson : isOverlapping(newLesson)
-    activate ExistingLesson
-    ExistingLesson --> Student : isOverlap
-    deactivate ExistingLesson
-end
+ScheduleCommand -> Student : getName()
+activate Student
+Student --> ScheduleCommand : name
+deactivate Student
 
-alt isOverlap == true
-    Student --> ScheduleCommand : TutorSwiftException
-    deactivate Student
-
-    [<-- ScheduleCommand : TutorSwiftException
-
-else isOverlap == false
-    deactivate Student
-
-    ScheduleCommand -> Student : getName()
-    activate Student
-    Student --> ScheduleCommand : "Alice"
-    deactivate Student
-
-    ScheduleCommand -> Ui : showLessonScheduled("Alice", newLesson)
-    activate Ui
-    deactivate Ui
-end
+ScheduleCommand -> Ui : showLessonScheduled(name, newLesson)
+activate Ui
+deactivate Ui
 
 [<-- ScheduleCommand
 deactivate ScheduleCommand
