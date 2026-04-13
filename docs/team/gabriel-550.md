@@ -4,7 +4,7 @@
 
 TutorSwift is a command-line application for private tutors to manage student records, including lessons, grades, and payments.
 
-It is designed to streamline administrative tasks such as tracking student performance and managing finances efficiently through a CLI interface.
+It is designed to streamline administrative tasks such as tracking student performance and managing lesson schedules efficiently through a CLI interface.
 
 ---
 
@@ -32,19 +32,19 @@ It is designed to streamline administrative tasks such as tracking student perfo
 
 **2. Finance Tracking Features**
 
-- Implemented the `fee`, `paid`, and `unpaid` commands to give the user a complete payment tracking system for each student.
+- Implemented the `fee`, `paid` and `unpaid` commands to give the user a complete payment tracking system for each student.
 
 - **`fee` command**
     - What it does: Sets a per-lesson fee in dollars for a specific student. The fee is stored in the student's `FeeRecord` and displayed alongside their profile in the list.
     - Justification: This feature improves the product significantly because tutors charge different rates for different students. Having the fee stored per student makes it easy to track and review.
 
 - **`paid` command**
-    - What it does: Marks a student's payment as paid for a specified month using the `ym/YYYY-MM` format. Multiple months can be tracked independently and all paid months are displayed together on the student's profile.
+    - What it does: Marks a student's payment as paid for a specified month using the `ym/YYYY-MM` format. Multiple months can be tracked independently and all recorded months are displayed and sorted chronologically on the student's profile.
     - Justification: This feature improves the product significantly because tutors are paid monthly and need a simple way to record which months have been paid.
 
 - **`unpaid` command**
-    - What it does: Marks a student's payment as unpaid for a specified month using the `ym/YYYY-MM` format, removing it from the student's paid records. Other paid months are unaffected.
-    - Justification: This feature improves the product significantly because tutors may mark the wrong month as paid and need a way to correct it cleanly without affecting other records.
+    - What it does: Marks a student's payment as unpaid for a specified month using the `ym/YYYY-MM` format. This can be applied to any month, whether it was previously marked paid or has no payment record at all, explicitly flagging it as outstanding.
+    - Justification: This feature improves the product significantly because tutors can easily identify outstanding payments by flagging the specific month, while also serving as a helpful reminder.
 
 - Highlights: Implemented the `FeeRecord` class to encapsulate all finance-related data (per-lesson fee and list of paid months).
 
