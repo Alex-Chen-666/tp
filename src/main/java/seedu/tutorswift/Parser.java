@@ -88,6 +88,10 @@ public class Parser {
      * @return A {@link Command} object ready for execution.
      */
     public static Command parseUserInput(String userInput)  throws TutorSwiftException {
+        if (userInput.contains("|")) {
+            throw new TutorSwiftException("The character '|' is reserved for system use");
+        }
+
         if (userInput.trim().isEmpty()) {
             throw new TutorSwiftException(USAGE_GUIDE);
         }

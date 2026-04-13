@@ -89,6 +89,8 @@ Refer to the Features below for details of each command.
 
   e.g. if the command specifies `bye 123`, it will be interpreted as `bye`.
 
+- Reserved Characters: The pipe character (`|`) is reserved for system formatting. To prevent data corruption, any input containing this character will be rejected.
+
 ### Adding a student: `add`
 Adds a new student to your active list.
 

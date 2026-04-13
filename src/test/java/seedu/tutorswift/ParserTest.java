@@ -30,6 +30,18 @@ public class ParserTest {
     }
 
     @Test
+    public void parseUserInput_inputWithPipe_throwsTutorSwiftException() {
+        // Test that any input containing '|' is immediately rejected
+        TutorSwiftException e = assertThrows(TutorSwiftException.class, () ->
+                Parser.parseUserInput("add n/Amy | sub/Math"));
+        assertTrue(e.getMessage().contains("reserved for system use"));
+
+        TutorSwiftException e2 = assertThrows(TutorSwiftException.class, () ->
+                Parser.parseUserInput("remark 1 r/He is | great"));
+        assertTrue(e2.getMessage().contains("reserved for system use"));
+    }
+
+    @Test
     public void parseUserInput_validDeleteIndex_returnsDeleteCommand() throws TutorSwiftException {
         Command result = Parser.parseUserInput("delete 1");
         assertInstanceOf(DeleteCommand.class, result);
@@ -168,5 +180,24 @@ public class ParserTest {
         TutorSwiftException e = assertThrows(TutorSwiftException.class, () ->
                 Parser.parseUserInput("schedule -1 day/MONDAY start/14:00 end/16:00"));
         assertEquals("Index must be a positive integer.", e.getMessage());
+    }
+
+    @Test
+    public void execute_scheduleTwice_overwritesFirstLesson() throws TutorSwiftException {
+        StudentList students = new StudentList();
+        Student s = new Student("John", "Sec 1", "Math");
+        students.addStudent(s);
+        Ui ui = new Ui();
+
+        Command cmd1 = Parser.parseUserInput("schedule 1 day/MONDAY start/10:00 end/12:00");
+        cmd1.execute(students, ui);
+        assertEquals(1, s.getLessons().size());
+        assertEquals(java.time.DayOfWeek.MONDAY, s.getLessons().get(0).getDay());
+
+        Command cmd2 = Parser.parseUserInput("schedule 1 day/TUESDAY start/14:00 end/16:00");
+        cmd2.execute(students, ui);
+
+        assertEquals(1, s.getLessons().size());
+        assertEquals(java.time.DayOfWeek.TUESDAY, s.getLessons().get(0).getDay());
     }
 }
