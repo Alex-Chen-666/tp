@@ -296,7 +296,7 @@ public class Ui {
     }
     /**
      * Displays the fee summary report for a specific student for a given month.
-     * * @param student The {@code Student} whose fees are being summarized.
+     * @param student The {@code Student} whose fees are being summarized.
      * @param month The {@code YearMonth} for which the fee calculation was performed.
      * @param total The total calculated fee amount due for the student in that month.
      */
@@ -310,7 +310,7 @@ public class Ui {
 
     /**
      * Displays the total income earned for a specific month across all active students.
-     * * @param month The {@code YearMonth} representing the report period.
+     * @param month The {@code YearMonth} representing the report period.
      * @param total The aggregated revenue earned from all active students in that month.
      */
     public void showMonthlyIncome(YearMonth month, int total) {

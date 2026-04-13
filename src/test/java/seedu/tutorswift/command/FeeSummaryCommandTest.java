@@ -1,8 +1,11 @@
 package seedu.tutorswift.command;
-
+import seedu.tutorswift.Student;
+import seedu.tutorswift.StudentList;
+import seedu.tutorswift.TutorSwiftException;
+import seedu.tutorswift.Ui;
+import seedu.tutorswift.Lesson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seedu.tutorswift.*;
 import java.time.YearMonth;
 import java.time.DayOfWeek;
 import java.time.LocalTime;

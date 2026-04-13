@@ -1,6 +1,27 @@
 package seedu.tutorswift;
 
-import seedu.tutorswift.command.*;
+import seedu.tutorswift.command.Command;
+import seedu.tutorswift.command.EditCommand;
+import seedu.tutorswift.command.ExitCommand;
+import seedu.tutorswift.command.DeleteCommand;
+import seedu.tutorswift.command.ListCommand;
+import seedu.tutorswift.command.AddCommand;
+import seedu.tutorswift.command.FindCommand;
+import seedu.tutorswift.command.ArchiveCommand;
+import seedu.tutorswift.command.UnarchiveCommand;
+import seedu.tutorswift.command.ListArchiveCommand;
+import seedu.tutorswift.command.DeleteArchiveCommand;
+import seedu.tutorswift.command.ScheduleCommand;
+import seedu.tutorswift.command.GradeCommand;
+import seedu.tutorswift.command.RemarkCommand;
+import seedu.tutorswift.command.FeeCommand;
+import seedu.tutorswift.command.PaidCommand;
+import seedu.tutorswift.command.UnpaidCommand;
+import seedu.tutorswift.command.UpcomingCommand;
+import seedu.tutorswift.command.RemoveGradeCommand;
+import seedu.tutorswift.command.RemoveRemarkCommand;
+import seedu.tutorswift.command.MonthlyIncomeCommand;
+import seedu.tutorswift.command.FeeSummaryCommand;
 
 import java.time.YearMonth;
 import java.time.DayOfWeek;
@@ -511,15 +532,7 @@ public class Parser {
             throw new TutorSwiftException("Invalid year-month. Use ym/YYYY-MM (e.g. ym/2026-03).");
         }
     }
-    /**
-     * Parses the "feesummary" command string and returns a {@code FeeSummaryCommand}.
-     * The command expects an index followed by a month in the format "ym/YYYY-MM".
-     *
-     * @param args The command arguments string containing the student index and month.
-     * @return A new {@code FeeSummaryCommand} initialized with the parsed index and month.
-     * @throws TutorSwiftException If the arguments are empty, the index is invalid,
-     * or the month format is incorrect.
-     */
+
     private static Command parseFeeSummary(String args) throws TutorSwiftException {
         if (args.trim().isEmpty()) {
             throw new TutorSwiftException("Usage: fee-summary INDEX ym/YYYY-MM");
@@ -533,14 +546,7 @@ public class Parser {
 
         return new FeeSummaryCommand(index, month);
     }
-    /**
-     * Parses the "monthly-income" command string and returns a {@code MonthlyIncomeCommand}.
-     * The command expects a month in the format "ym/YYYY-MM".
-     *
-     * @param args The command arguments string containing the month.
-     * @return A new {@code MonthlyIncomeCommand} initialized with the parsed month.
-     * @throws TutorSwiftException If the arguments are empty or the month format is incorrect.
-     */
+
     private static Command parseMonthlyIncome(String args) throws TutorSwiftException {
         if (args.trim().isEmpty()) {
             throw new TutorSwiftException("Usage: monthly-income ym/YYYY-MM");
