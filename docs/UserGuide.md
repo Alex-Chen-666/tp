@@ -321,7 +321,11 @@ Format: `schedule INDEX day/DAY_OF_WEEK start/START_TIME end/END_TIME`
 
 - `START_TIME` must be strictly before the `END_TIME`.
 
-- Note on time conflicts: You cannot schedule a lesson that overlaps with another existing lesson for the same student. However, the system intentionally allows overlapping lessons across different students. This provides maximum flexibility for tutors who run group tuition classes, supervised study rooms, or mixed homework clinics where multiple students may be studying different subjects or academic levels at the same time.
+- Note on time conflicts: The system intentionally allows overlapping lessons across different students. This provides maximum flexibility for tutors who run group tuition classes, supervised study rooms, or mixed homework clinics where multiple students may be studying different subjects or academic levels at the same time.
+
+- Rescheduling (The Overwrite Rule): TutorSwift tracks one primary recurring lesson per student. If you need to reschedule a lesson, simply run the schedule command again with the new timing. The system will automatically overwrite the old lesson with the new one, preventing accidental double-booking.
+
+- Removing lesson: To 'remove' a lesson, update it to the new correct timing. If a student stops having lessons entirely, you should archive the student, which automatically removes them from the list while preserving their history.
 
 Examples of usage:
 

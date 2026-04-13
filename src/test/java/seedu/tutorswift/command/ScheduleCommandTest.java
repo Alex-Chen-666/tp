@@ -96,20 +96,23 @@ public class ScheduleCommandTest {
     }
 
     @Test
-    public void execute_overlappingLesson_throwsTutorSwiftException() throws TutorSwiftException {
+    public void execute_existingLesson_overwritesSuccessfully() throws TutorSwiftException {
         Student testStudent = new Student("Eve", "Primary 5", "English");
-        students.addStudent(testStudent);
+        students.addStudent(testStudent); // Index 1
 
         Lesson existingLesson = new Lesson(DayOfWeek.THURSDAY, LocalTime.of(15, 0), LocalTime.of(17, 0));
         testStudent.addLesson(existingLesson);
 
-        DayOfWeek testDay = DayOfWeek.THURSDAY;
-        LocalTime startTime = LocalTime.of(16, 0);
-        LocalTime endTime = LocalTime.of(18, 0);
-        ScheduleCommand command = new ScheduleCommand(1, testDay, startTime, endTime);
+        DayOfWeek newDay = DayOfWeek.FRIDAY;
+        LocalTime newStart = LocalTime.of(16, 0);
+        LocalTime newEnd = LocalTime.of(18, 0);
+        ScheduleCommand command = new ScheduleCommand(1, newDay, newStart, newEnd);
 
-        assertThrows(TutorSwiftException.class, () -> {
-            command.execute(students, ui);
-        });
+        command.execute(students, ui);
+
+        assertEquals(1, testStudent.getLessons().size());
+        assertEquals(newDay, testStudent.getLessons().get(0).getDay());
+        assertEquals(newStart, testStudent.getLessons().get(0).getStartTime());
+        assertEquals(newEnd, testStudent.getLessons().get(0).getEndTime());
     }
 }
