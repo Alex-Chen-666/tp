@@ -511,6 +511,8 @@ TutorSwift automatically saves your data after every successful command.
 *   **Auto-loading**: The app automatically loads this file upon startup.
 *   **Safety**: You do not need a "Save" command. Simply use `bye` or exit the terminal.
 
+Note: Please do not manipulate the `./data/tutorswift.txt` manually.
+
 ### Archiving Logic
 The system maintains two distinct lists:
 1.  **Active List**: For your current students.

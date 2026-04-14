@@ -141,6 +141,8 @@ The API of this component is specified in `Storage.java`.
 - Read file line-by-line, reconstruct `Student` objects via `parseLineToStudent`, skip corrupted lines with warnings.
 - Provide a testable constructor for temporary file paths
 
+Note: Please do not manipulate the `./data/tutorswift.txt` manually.
+
 ---
 
 ## Implementation
@@ -527,7 +529,9 @@ The persistence logic is handled by the `Storage` class, which manages the follo
 1.  **Automatic Saving**: After a command is successfully executed in `TutorSwift#run()`, `storage.save(students)` is triggered. The system iterates through both active and archived lists.
 2.  **Data Encoding**: Each `Student` object is converted into a structured, pipe-separated string via `Student#toSaveFormat()`. The format is: `Name | Level | Subject | isArchived | Grades | Schedule | Remark | FeeRecord`.
 3.  **Data Decoding**: Upon startup, `Storage#load()` reads the file. The method `parseLineToStudent` carefully reconstructs the `Student` object, including nested data like grade lists and financial records.
-4.  **Robust Error Handling**: If a specific line is corrupted (e.g., manually edited incorrectly by a user), the system catches the exception, logs a `WARNING`, and skips to the next line. This prevents a single error from making the entire database unreadable.
+4.  **Robust Error Handling**: If a specific line is corrupted, the system catches the exception, logs a `WARNING`, and skips to the next line. This prevents a single error from making the entire database unreadable.
+
+Note: Please do not manipulate the `./data/tutorswift.txt` manually.
 
 The following sequence diagram illustrates how the application state is automatically persisted after a user command is executed:
 
@@ -919,3 +923,5 @@ Given below are instructions to test the app manually.
 - Relaunch the app and type `list`.
 
   Expected outcome: The app loads successfully and displays the modified data, proving local file storage works correctly.
+
+Note: Please do not manipulate the `./data/tutorswift.txt` manually.
