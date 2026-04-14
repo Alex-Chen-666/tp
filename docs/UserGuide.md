@@ -387,7 +387,7 @@ Example of usage:
 - `fee 1 f/50` — Sets the per-lesson fee for student 1 to $50.
 
 Remarks:
-- The system treats all text following the prefix as a single assessment name so you must strictly follow the format and exclude extra parameters to avoid a not found error.
+- The system treats all text following the prefix as a single assessment name so you must strictly follow the format and exclude extra parameters to avoid a not-found error.
 
 
 ### Marking payment as paid: `paid`
@@ -413,8 +413,9 @@ Examples of usage:
 - `paid 1 ym/2026-05` — Marks student 1 as paid for May 2026 (previous paid months are preserved).
 
 Expected behaviour:
-- Adds the specified month to the student's paid records
-- Displays updated student details including all paid months
+- Adds the specified month to the student's paid records, shown with a `[PAID]` label
+- If the month was previously marked unpaid, the `[UNPAID]` label is replaced with `[PAID]`
+- Displays updated student details with all recorded months sorted chronologically
 
 ### Marking payment as unpaid: `unpaid`
 
@@ -428,15 +429,20 @@ Format: `unpaid INDEX ym/YYYY-MM`
 
 - `YYYY-MM` must be a valid year and month (e.g., `2026-04` for April 2026).
 
-- If the specified month was not previously marked as paid, a success message is shown
-  but no data changes. Other months that are marked paid are unaffected.
+- Running `unpaid` on a month with no prior payment record will explicitly mark it
+  as unpaid, it does not require a prior `paid` command.
+
+- Running `unpaid` for a month already marked unpaid has no effect — duplicate
+  entries are not created.
 
 Example of usage:
-- `unpaid 1 ym/2026-04` — Removes the paid status for student 1 for April 2026.
+- `unpaid 1 ym/2026-04` — Marks student 1 as unpaid for April 2026, whether it was 
+  previously paid or had no record (other months are unaffected).
 
 Expected behaviour:
-- Removes the specified month from the student's paid records
-- Displays updated student details
+- Adds the specified month to the student's unpaid records, shown with an `[UNPAID]` label
+- If the month was previously marked paid, the `[PAID]` label is replaced with `[UNPAID]`
+- Displays updated student details with all recorded months sorted chronologically
 
 ### Calculating monthly student fees: `fee-summary`
 
@@ -513,9 +519,9 @@ The system maintains two distinct lists:
 
 ## FAQ
 
-**Q**: Why does an unpaid month not appear in the student list after running `list`?  
-**A**: This is expected behaviour. Only months that are marked as paid are displayed in the student list. 
-Unpaid months are intentionally not shown to keep the display clean and uncluttered.
+**Q**: What happens if I run `unpaid` on a month I never marked as paid?  
+**A**: The month will be explicitly recorded as unpaid and shown with an `[UNPAID]` label.
+The `unpaid` command does not require a prior `paid` command, it independently marks a month as unpaid.
 
 **Q**: Where is my data saved?  
 **A**: Inside the `data` folder in the same directory as your `tutorswift.jar` file.

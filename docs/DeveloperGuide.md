@@ -622,17 +622,24 @@ The primary logic is implemented in `FeeCommand#execute()`, `PaidCommand#execute
 and `UnpaidCommand#execute()`, each of which delegates state changes to `FeeRecord` 
 through `Student`.
 
-Each `Student` owns a `FeeRecord` instance that stores
-two things: a per-lesson fee (`int feePerLesson`) and a list of months the student
-has paid (`ArrayList<YearMonth> paidMonths`). The `fee` command sets the per-lesson
-rate, `paid` command adds a given `YearMonth` from the paid list while `unpaid` command
-removes it. All three commands share a common execution flow: validate the index, 
-retrieve the student, update the `FeeRecord` and call `Ui` to display the result.
+Each `Student` owns a `FeeRecord` instance that stores: a per-lesson fee (`int feePerLesson`), 
+a list of months the student has paid (`ArrayList<YearMonth> paidMonths`) and a list of months explicitly marked as unpaid
+(`ArrayList<YearMonth> unpaidMonths`). The `fee` command sets the per-lesson
+rate.The `paid` command adds a given `YearMonth` to `paidMonths` and removes it from
+`unpaidMonths` if previously marked unpaid. The `unpaid` command removes the month
+from `paidMonths` and adds it to `unpaidMonths` to record it as explicitly unpaid. 
+All three commands share a common execution flow: validate the index, 
+retrieve the student, update the `FeeRecord` and call `Ui` to display the result.  
+
+When displaying a student via `list`, months in `paidMonths` are shown with
+a `[PAID]` label and months in `unpaidMonths` are shown with an `[UNPAID]` label,
+sorted chronologically. A month can only carry one status at a time, marking it
+paid removes it from `unpaidMonths` and vice versa.
 
 #### Example Usage Scenario
 
 Step 1. The user launches the application. `StudentList` contains "Alice" at index 1,
-with `feePerLesson = 0` and no paid months recorded.
+with `feePerLesson = 0` and no paid or unpaid months recorded.
 
 Step 2. The user sets Alice's lesson fee by executing `fee 1 f/80`.
 
@@ -650,14 +657,16 @@ Step 6. The parser constructs a `PaidCommand(1, YearMonth.of(2026, 3))`.
 
 Step 7. `PaidCommand#execute()` retrieves Alice, calls `Student#markPaid(2026-03)`
 (which calls `FeeRecord#markPaid(2026-03)`), adding the month to `paidMonths` if not
-already present. `Ui#showPaidSuccess(alice, 2026-03)` is then called.
+already present, and removing it from `unpaidMonths` if previously marked unpaid. 
+`Ui#showPaidSuccess(alice, 2026-03)` is then called.
 
 Step 8. The user realises the payment amount received was incorrect and executes
 `unpaid 1 ym/2026-03`.
 
 Step 9. `UnpaidCommand#execute()` retrieves Alice and calls
 `Student#markUnpaid(2026-03)`, which calls `FeeRecord#markUnpaid(2026-03)` to remove
-March 2026 from `paidMonths`. Then, `Ui#showUnpaidSuccess(alice, 2026-03)` is called.
+March 2026 from `paidMonths` and add it to `unpaidMonths` if not already present,
+explicitly recording it as unpaid. Then, `Ui#showUnpaidSuccess(alice, 2026-03)` is called.
 
 Step 10. After each command, control returns to `TutorSwift`, which calls
 `Storage#save(students)` to persist the updated data to disk.
@@ -825,7 +834,7 @@ Given below are instructions to test the app manually.
 - Prerequisites: At least one active student in the list. Use `list` to verify.
 
 - Test case: `paid 1 ym/2026-03`  
-  Expected outcome: First student marked as PAID for March 2026. Updated details shown in result message.
+  Expected outcome: First student marked as PAID for March 2026. March 2026 shown with `[PAID]` label in updated details.
 
 - Test case: `paid 1 ym/2026-13`  
   Expected outcome: Error message is shown. Month value 13 is invalid.
@@ -835,10 +844,17 @@ Given below are instructions to test the app manually.
 
 ### Marking a student's payment as unpaid
 
-- Prerequisites: At least one active student previously marked as paid for a month. Use `paid 1 ym/2026-03` to set up.
+- Prerequisites: At least one active student in the list. Use `list` to verify. 
+  A prior `paid` command is not required as `unpaid` can explicitly mark any month 
+  as unpaid regardless of prior payment status.
 
-- Test case: `unpaid 1 ym/2026-03`  
-  Expected outcome: March 2026 removed from the student's paid months. Updated details shown in result message.
+- Test case: `unpaid 1 ym/2026-03` (on a month previously marked paid)  
+  Expected outcome: March 2026 removed from paid months and added to unpaid months.
+  March 2026 shown with `[UNPAID]` label in updated details.
+
+- Test case: `unpaid 1 ym/2026-04` (on a month with no prior payment record)    
+  Expected outcome: April 2026 explicitly added to unpaid months. April 2026 shown
+  with `[UNPAID]` label in updated details.
 
 - Test case: `unpaid 1`  
   Expected outcome: Error message is shown. Missing `ym/` prefix.
