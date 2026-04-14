@@ -5,6 +5,10 @@ participant "c:Command" as Command
 participant ":StudentList" as StudentList
 participant ":Storage" as Storage
 
+
+[-> Main : run()
+activate Main
+
 Main -> Command : execute(students, ui)
 activate Command
 
@@ -38,5 +42,9 @@ opt c.isExit() is false
     Storage --> Main
     deactivate Storage
 end
+
+
+[<-- Main
+deactivate Main
 
 @enduml
